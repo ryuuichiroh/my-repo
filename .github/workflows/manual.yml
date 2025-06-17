@@ -7,8 +7,18 @@ on:
         default: Hello
         required: true
         description: A cheerful word
+      log-level:
+        type: choice
+        options:
+          - debug
+          - info
+          - warning
+          - error
+        default: info
+        description: The level of logging to use
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{ inputs.greeting }}"
+      - run: echo "Log level is ${{ inputs.log-level }}"
