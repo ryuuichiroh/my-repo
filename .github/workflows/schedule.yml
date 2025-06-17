@@ -1,7 +1,9 @@
 name: Schedule
 on:
   schedule:
-    - cron: '*/60 * * * *'
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
 jobs:
   run:
     runs-on: ubuntu-latest
