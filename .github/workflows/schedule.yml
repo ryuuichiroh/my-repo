@@ -1,0 +1,11 @@
+name: Schedule
+on:
+  schedule:
+    - cron: '*/60 * * * *'
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This job runs every hour as per the schedule."
+      - uses: actions/checkout@v4
+      - run: echo "Scheduled workflow executed successfully!" 
