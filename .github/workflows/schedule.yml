@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "This job runs every hour as per the schedule."
-      - uses: actions/checkout@v4
+      - run: date
       - run: echo "Scheduled workflow executed successfully!" 
