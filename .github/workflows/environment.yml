@@ -6,7 +6,10 @@ jobs:
     env:
       ACTOR: ${{ github.actor }}
       USERNAME: ${{ vars.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
       - run: echo "${BRANCH}"
       - run: echo "${ACTOR}"
       - run: echo "${USERNAME}"
+      - run: echo "${PASSWORD}"
+      - run: echo "${PASSWORD:0:1}${PASSWORD#?}"
