@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACTOR: ${{ github.actor }}
+      USERNAME: ${{ vars.USERNAME }}
     steps:
       - run: echo "${BRANCH}"
       - run: echo "${ACTOR}"
+      - run: echo "${USERNAME}"
