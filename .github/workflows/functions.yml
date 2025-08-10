@@ -12,7 +12,7 @@ jobs:
           CONTAINS_2_FUNC: ${{ contains(github.event.issue.labels.*.name, 'bug') }}
           FORMAT_FUNC: ${{ format('{0}, {1}', 'Hi', 'world') }}
           JOIN_FUNC: ${{ join(github.event.*.html_url, ',') }}
-      - run: echo ${CONTEXT}
+      - run: echo "${CONTEXT}"
         env:
           CONTEXT: ${{ toJSON(github) }}
       - uses: actions/checkout@v4
