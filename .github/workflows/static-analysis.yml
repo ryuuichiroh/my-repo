@@ -1,0 +1,24 @@
+name: Static analysis
+run-name: Static Analysis for Github Actions!!
+
+on:
+  pull_request:
+    paths: [".github/workflow/*.yml", ".github/workflow/*.yaml"]
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github-ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: GitHub Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          docker run --rm -v "$(pwd):$(pwd)" -w "$(pwd)" rhysd/actionlint:latest
