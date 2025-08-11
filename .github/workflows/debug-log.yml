@@ -1,8 +1,17 @@
 name: Debug log
-run-name: Debug Log^^
+run-name: Debug Log + Bash Tracing^^
 on: [push, workflow_dispatch]
 jobs:
   log:
     runs-on: ubuntu-latest
     steps:
       - run: echo "::debug::This is a debug log"
+      - run: |
+          date
+          hostname
+      - run: echo "Set -x"
+      - run: |
+          set -x
+          date
+          hostname
+      - run: echo "Finish^^"
