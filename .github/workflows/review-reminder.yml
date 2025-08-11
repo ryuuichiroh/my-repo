@@ -1,0 +1,38 @@
+name: Review Reminder
+on:
+  pull_request:
+    types: [review_requested, ready_for_review]
+  schedule:
+    # 平日の朝9時にリマインダー実行
+    - cron: '0 0 * * 1-5'
+
+jobs:
+  send-review-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get pending reviews
+        id: pending-reviews
+        run: |
+          # GitHub CLIで未承認のPRを取得
+          gh pr list --state open --json number,title,author,reviewRequests > prs.json
+          echo "prs=$(cat prs.json)" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Send Slack reminder
+        if: ${{ fromJson(steps.pending-reviews.outputs.prs) != '[]' }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": ":warning: レビュー待ちのPRがあります！",
+              "username": "Review Bot",
+              "icon_emoji": ":eyes:",
+              "attachments": [
+                {
+                  "color": "warning",
+                  "title": "Pending Reviews",
+                  "text": "以下のPRがレビューを待っています:\n${{ github.event.pull_request.html_url }}"
+                }
+              ]
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
