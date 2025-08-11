@@ -34,5 +34,20 @@ jobs:
                   "text": "以下のPRがレビューを待っています:\n${{ github.event.pull_request.html_url }}"
                 }
               ]
-            }' \
+          PRS=$(echo '${{ steps.pending-reviews.outputs.prs }}' | jq -c '.')
+          REPO_URL="https://github.com/${{ github.repository }}/pull"
+          PR_LIST=$(echo "$PRS" | jq -r '.[] | "- [#" + (.number|tostring) + "](" + "'"$REPO_URL"'" + "/" + (.number|tostring) + "): " + .title + " by @" + .author.login' | paste -sd '\n' -)
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \":warning: レビュー待ちのPRがあります！\",
+              \"username\": \"Review Bot\",
+              \"icon_emoji\": \":eyes:\",
+              \"attachments\": [
+                {
+                  \"color\": \"warning\",
+                  \"title\": \"Pending Reviews\",
+                  \"text\": \"以下のPRがレビューを待っています:\n$PR_LIST\"
+                }
+              ]
+            }" \
             ${{ secrets.SLACK_WEBHOOK_URL }}
