@@ -3,6 +3,7 @@ run-name: Debug Log + Bash Tracing^^
 on: [push, workflow_dispatch]
 jobs:
   log:
+    name: Log!
     runs-on: ubuntu-latest
     env:
       USERNAME: "${vars.USERNAME}"
@@ -27,8 +28,17 @@ jobs:
       - run: echo ${UNMASKED_USERNAME}
       - run: echo "Finish^^"
   annotation:
+    name: Annotation!
     runs-on: ubuntu-latest
     steps:
       - run: echo "::error::This is an error"
       - run: echo "::warning::This is a warning"
       - run: echo "::notice::This is a notice"
+  job-summmary:
+    runs-on: ubuntu-latest
+    name: Job Summary!
+    steps:
+      - run: | # マークダウン形式でジョブサマリへ出力
+          echo "## Example TItle :rocket:" >> "${GITHUB_STEP_SUMMARY}"
+          echo "- first line" >> "${GITHUB_STEP_SUMMARY}"
+          echo "- second" line >> "${GITHUB_STEP_SUMMARY}"
