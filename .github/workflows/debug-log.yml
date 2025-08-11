@@ -4,6 +4,8 @@ on: [push, workflow_dispatch]
 jobs:
   log:
     runs-on: ubuntu-latest
+    env:
+      PASSWORD: "${vars.USERNAME} SuperSecretValue"
     steps:
       - run: echo "::debug::This is a debug log"
       - run: |
@@ -14,4 +16,10 @@ jobs:
           set -x
           date
           hostname
+      - run: |
+          echo "::group::Show environment variables"
+          printenv
+          echo "::endgroup::"
+      - run: echo "::add-mask::${PASSWORD}"
+      - run: echo ${PASSWORD}
       - run: echo "Finish^^"
