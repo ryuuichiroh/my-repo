@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       USERNAME: "${vars.USERNAME}"
+      UNMASKED_USERNAME: "${{ vars.USERNAME }}"
     steps:
       - run: echo "::debug::This is a debug log"
       - run: |
@@ -20,6 +21,8 @@ jobs:
           echo "::group::Show environment variables"
           printenv
           echo "::endgroup::"
+      - run: echo "${USERNAME}"
       - run: echo "::add-mask::${USERNAME}"
       - run: echo ${USERNAME}
+      - run: echo ${UNMASKED_USERNAME}
       - run: echo "Finish^^"
