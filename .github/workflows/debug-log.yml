@@ -39,6 +39,12 @@ jobs:
     name: Job Summary!
     steps:
       - run: | # マークダウン形式でジョブサマリへ出力
-          echo "## Example TItle :rocket:" >> "${GITHUB_STEP_SUMMARY}"
-          echo "- first line" >> "${GITHUB_STEP_SUMMARY}"
-          echo "- second" line >> "${GITHUB_STEP_SUMMARY}"
+          cat >> "${GITHUB_STEP_SUMMARY}" << 'EOF'
+          ## Example Title :rocket:
+          - first line
+          - second line
+          - third line
+          
+          ### Additional Info
+          This is much more efficient!
+          EOF
