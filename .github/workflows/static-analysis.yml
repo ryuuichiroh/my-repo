@@ -2,7 +2,7 @@ name: Static analysis
 run-name: Static Analysis for Github Actions!!
 
 on:
-  pull_request:
+  push:
     paths: [".github/workflow/*.yml", ".github/workflow/*.yaml"]
   workflow_dispatch:
 
