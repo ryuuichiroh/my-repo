@@ -11,6 +11,9 @@ jobs:
   send-review-reminder:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
       - name: Get pending reviews
         id: pending-reviews
         run: |
