@@ -1,4 +1,5 @@
 name: Auto patch merge
+run-name: auto-patch-merge
 on: pull_request
 jobs:
   merge:

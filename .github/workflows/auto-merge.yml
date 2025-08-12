@@ -1,4 +1,5 @@
 name: Auto merge
+run-name: auto-merge
 on: pull_request
 jobs:
   merge:
