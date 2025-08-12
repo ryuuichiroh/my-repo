@@ -4,12 +4,12 @@ description: |
   ワークフローのデバッグに便利です。
 inputs:
   enable-context:
-    default: "true"
+    default: 'true'
     required: false
     description: コンテキストをログ出力するか
 outputs:
   dumped-date:
-    value: ${{ steps.current.output.date }}
+    value: ${{ steps.current.outputs.date }}
     description: ダンプ日時
 runs:
   using: composite # アクションの実行方式
