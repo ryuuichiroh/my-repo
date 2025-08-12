@@ -14,10 +14,24 @@ jobs:
       - uses: actions/checkout@v5
       - id: meta
         uses: dependabot/fetch-metadata@v2
-      - if: >-
-          ${{ steps.meta.outputs.package-ecosystem == 'github_actions' &&
+      - name: Auto-approve and merge GitHub Actions updates
+        if: >-
+          ${{ steps.meta.outputs.package-ecosystem == 'github_actions' && 
             steps.meta.outputs.update-type != 'version-update:semver-major' }}
+        env:
+          COMMENT_BODY: "🤖 **Auto-merging**: GitHub Actions dependency update (non-major version)"
         run: |
+          gh pr comment "${GITHUB_HEAD_REF}" --body "${COMMENT_BODY}"
+          gh pr review "${GITHUB_HEAD_REF}" --approve
+          gh pr merge "${GITHUB_HEAD_REF}" --merge --auto
+      - name: Auto-approve and merge development patch updates  
+        if: >-
+          ${{ steps.meta.outputs.dependency-type == 'direct:development' && 
+            steps.meta.outputs.update-type == 'version-update:semver-patch' }}
+        env:
+          COMMENT_BODY: "🤖 **Auto-merging**: Development dependency patch update"
+        run: |
+          gh pr comment "${GITHUB_HEAD_REF}" --body "${COMMENT_BODY}"
           gh pr review "${GITHUB_HEAD_REF}" --approve
           gh pr merge "${GITHUB_HEAD_REF}" --merge --auto
 

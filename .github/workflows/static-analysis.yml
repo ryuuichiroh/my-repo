@@ -1,5 +1,5 @@
 name: Static analysis
-run-name: Static Analysis for Github Actions!!
+run-name: Static Analysis for Github Actions
 
 on:
   push:
