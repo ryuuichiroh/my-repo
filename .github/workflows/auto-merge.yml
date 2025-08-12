@@ -11,7 +11,12 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v5
-      - run: |
+      - id: meta
+        uses: dependabot/fetch-metadata
+      - if: >-
+          ${{ steps.meta.output.package-ecosystem == 'github_actions' &&
+            steps.meta.outputs.update-type != 'version-update:semver-major' }}
+        run: |
           gh pr review "${GITHUB_HEAD_REF}" --approve
           gh pr merge "${GITHUB_HEAD_REF}" --merge --auto
 
