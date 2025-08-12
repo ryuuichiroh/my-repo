@@ -17,7 +17,7 @@ runs:
     - run: printenv | sort # 環境変数をソートして出力するんだろうな、これ。
       shell: bash
     - run: echo "${CONTEXT}"
-      if: ${{ input.enable-context == 'true' }}
+      if: ${{ inputs.enable-context == 'true' }}
       env:
         CONTEXT: ${{ toJSON(github) }} # なんだこれ？
       shell: bash
