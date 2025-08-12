@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: / # GitHub Actions のみ '/' 固定
+    schedule:
+      interval: weekly
