@@ -1,15 +1,21 @@
 name: Review Reminder
 on:
-  workflow_dispatch:
   pull_request:
     types: [review_requested, ready_for_review]
   schedule:
     # 平日の朝 9 時 (JST) にリマインダー実行
     - cron: '0 0 * * 1-5'
-
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   send-review-reminder:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
