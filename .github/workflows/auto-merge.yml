@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - id: meta
-        uses: dependabot/fetch-metadata
+        uses: dependabot/fetch-metadata@v2
       - if: >-
           ${{ steps.meta.output.package-ecosystem == 'github_actions' &&
             steps.meta.outputs.update-type != 'version-update:semver-major' }}
