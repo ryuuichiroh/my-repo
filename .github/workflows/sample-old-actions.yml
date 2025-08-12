@@ -9,11 +9,7 @@ jobs:
       - uses: actions/setup-node@v4.0.0  # v4.4.0 に更新される
       - uses: actions/cache@v4.2.4  # v4.2.4 に更新される
       
-      # メジャーバージョン更新（auto-mergeの対象外）
-      - uses: actions/setup-python@v4  # v5に更新される（手動承認が必要）
-      
       - name: Run tests
         run: |
           echo "Testing with specific patch versions"
           node --version
-          python --version
