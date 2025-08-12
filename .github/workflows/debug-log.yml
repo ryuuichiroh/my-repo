@@ -24,8 +24,8 @@ jobs:
           echo "::endgroup::"
       - run: echo "${USERNAME}"
       - run: echo "::add-mask::${USERNAME}"
-      - run: echo ${USERNAME}
-      - run: echo ${UNMASKED_USERNAME}
+      - run: echo "${USERNAME}"
+      - run: echo "${UNMASKED_USERNAME}"
       - run: echo "Finish^^"
   annotation:
     name: Annotation!

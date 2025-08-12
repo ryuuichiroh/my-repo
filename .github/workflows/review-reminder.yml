@@ -1,0 +1,80 @@
+name: Review Reminder
+on:
+  pull_request:
+    types: [review_requested, ready_for_review]
+  schedule:
+    # 平日の朝 9 時 (JST) にリマインダー実行
+    - cron: '0 0 * * 1-5'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  send-review-reminder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Get pending reviews
+        id: pending-reviews
+        run: |
+          # GitHub CLIで未承認のPRとレビュー情報を取得
+          gh pr list --state open --json number,title,author,reviewRequests,reviews > prs.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Format PR list
+        id: format-prs
+        run: |
+          # 未レビューの人のみを抽出してPRリストを整形
+          if [ -s prs.json ] && [ "$(cat prs.json)" != "[]" ]; then
+            PR_LIST=$(jq -r '
+              .[] | 
+              # レビュー済みのユーザーを取得
+              (.reviews | map(.author.login) | unique) as $reviewed_users |
+              # リクエストされたレビュアーから未レビューの人のみ抽出
+              (.reviewRequests | map(.login) | map(select(. as $user | $reviewed_users | index($user) | not))) as $pending_reviewers |
+              # 未レビューの人がいる場合のみ出力
+              if ($pending_reviewers | length) > 0 then
+                "- [\(.title)](https://github.com/${{ github.repository }}/pull/\(.number)) by @\(.author.login)\n  未レビュー: \($pending_reviewers | map("@" + .) | join(", "))"
+              else
+                empty
+              end
+            ' prs.json)
+            
+            if [ -n "$PR_LIST" ]; then
+              {
+                echo "has_prs=true"
+                echo "pr_list<<EOF"
+                echo "$PR_LIST"
+                echo "EOF"
+              } >> "$GITHUB_OUTPUT"
+            else
+              echo "has_prs=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "has_prs=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Send Slack reminder
+        if: steps.format-prs.outputs.has_prs == 'true'
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \":warning: レビュー待ちのPRがあります！\",
+              \"username\": \"Review Bot\",
+              \"icon_emoji\": \":eyes:\",
+              \"attachments\": [
+                {
+                  \"color\": \"warning\",
+                  \"title\": \"Pending Reviews (${{ github.repository }})\",
+                  \"text\": \"以下のPRがレビューを待っています:\n${{ steps.format-prs.outputs.pr_list }}\"
+                }
+              ]
+            }" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
