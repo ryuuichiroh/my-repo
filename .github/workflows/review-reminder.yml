@@ -48,15 +48,15 @@ jobs:
             ' prs.json)
             
             if [ -n "$PR_LIST" ]; then
-              echo "has_prs=true" >> $GITHUB_OUTPUT
-              echo "pr_list<<EOF" >> $GITHUB_OUTPUT
-              echo "$PR_LIST" >> $GITHUB_OUTPUT
-              echo "EOF" >> $GITHUB_OUTPUT
+              echo "has_prs=true" >> "$GITHUB_OUTPUT"
+              echo "pr_list<<EOF" >> "$GITHUB_OUTPUT"
+              echo "$PR_LIST" >> "$GITHUB_OUTPUT"
+              echo "EOF" >> "$GITHUB_OUTPUT"
             else
-              echo "has_prs=false" >> $GITHUB_OUTPUT
+              echo "has_prs=false" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "has_prs=false" >> $GITHUB_OUTPUT
+            echo "has_prs=false" >> "$GITHUB_OUTPUT"
           fi
       
       - name: Send Slack reminder
