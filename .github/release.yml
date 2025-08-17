@@ -1,5 +1,5 @@
 changelog:
-  categories:
+  categories: # リリースノートのカテゴリ設定
     - title: Enhancement
       labels:
         - enhancement
@@ -7,7 +7,7 @@ changelog:
       labels:
         - bug
         - fixes
-  exclude:
+  exclude: # 除外設定
     labels:
       - dependencies
     authors:
