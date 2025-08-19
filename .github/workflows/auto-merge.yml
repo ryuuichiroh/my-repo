@@ -11,7 +11,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v5
       - id: meta
         uses: dependabot/fetch-metadata@v2
       - name: Auto-approve and merge GitHub Actions updates
