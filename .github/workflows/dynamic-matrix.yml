@@ -1,7 +1,8 @@
 name: Dynamic matrix
+run-name: Dynamic matrix
 on: push
 env:
-  TIMEOUT: 1
+  TIMEOUT: 3
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -13,10 +14,10 @@ jobs:
     outputs:
       matrix-json: ${{ steps.dynamic.outputs.json }}
   print:
-    timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
     needs: [prepare]
     strategy:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix-json) }}
     runs-on: ${{ matrix.runner }}
     steps:
       - run: echo "${RUNNER_OS}"
+        timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
