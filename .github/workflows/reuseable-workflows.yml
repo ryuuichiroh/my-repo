@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: pr-comment
         run: |
-          body="Welcome, ${GITHUB_ACTOR}" # GITHUB_ACTOR どこから？
+          body="Welcome, ${GITHUB_ACTOR}"
           gh pr comment ${PR_NUMBER} --body "${body}"
           echo "body=${body}" >> "${GITHUB_OUTPUT}"
         env:
