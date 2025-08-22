@@ -17,6 +17,6 @@ jobs:
     needs: [prepare]
     strategy:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix-json) }}
-    runs-on: ${{ matrix-runner }}
+    runs-on: ${{ matrix.runner }}
     steps:
       - run: echo "${RUNNER_OS}"
