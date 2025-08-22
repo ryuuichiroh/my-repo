@@ -5,7 +5,7 @@ on:
       pr-number:
         type: string
         default: ${{ github.event.pull_request.number }}
-        required: true
+        required: false
         description: プルリクエスト番号
     secrets:
       token:
