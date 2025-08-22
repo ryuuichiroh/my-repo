@@ -1,5 +1,7 @@
 name: Call
-on: pull_request
+on: 
+  pull_request:
+    types: [opened]
 jobs:
   call:
     uses: ./.github/workflows/reusable-workflows.yml
